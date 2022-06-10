@@ -16,3 +16,4 @@ C:\Users\nisse\source\repos\TennisGame\TennisGame\obj\Debug\net5.0-windows\Tenni
 C:\Users\nisse\source\repos\TennisGame\TennisGame\obj\Debug\net5.0-windows\ref\TennisGame.dll
 C:\Users\nisse\source\repos\TennisGame\TennisGame\obj\Debug\net5.0-windows\TennisGame.pdb
 C:\Users\nisse\source\repos\TennisGame\TennisGame\obj\Debug\net5.0-windows\TennisGame.genruntimeconfig.cache
+C:\Users\nisse\source\repos\TennisGame\TennisGame\obj\Debug\net5.0-windows\TennisGame.Properties.Resources.resources
