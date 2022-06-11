@@ -66,7 +66,7 @@ namespace TennisGame
             // 
             this.player1Score.AutoSize = true;
             this.player1Score.Font = new System.Drawing.Font("Segoe UI", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.player1Score.Location = new System.Drawing.Point(238, 174);
+            this.player1Score.Location = new System.Drawing.Point(229, 174);
             this.player1Score.Name = "player1Score";
             this.player1Score.Size = new System.Drawing.Size(72, 86);
             this.player1Score.TabIndex = 4;
@@ -76,7 +76,7 @@ namespace TennisGame
             // 
             this.player2Score.AutoSize = true;
             this.player2Score.Font = new System.Drawing.Font("Segoe UI", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.player2Score.Location = new System.Drawing.Point(409, 174);
+            this.player2Score.Location = new System.Drawing.Point(427, 174);
             this.player2Score.Name = "player2Score";
             this.player2Score.Size = new System.Drawing.Size(72, 86);
             this.player2Score.TabIndex = 5;
@@ -85,18 +85,20 @@ namespace TennisGame
             // player1ScoreString
             // 
             this.player1ScoreString.AutoSize = true;
-            this.player1ScoreString.Location = new System.Drawing.Point(174, 302);
+            this.player1ScoreString.Font = new System.Drawing.Font("Amiri Quran", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.player1ScoreString.Location = new System.Drawing.Point(149, 267);
             this.player1ScoreString.Name = "player1ScoreString";
-            this.player1ScoreString.Size = new System.Drawing.Size(32, 15);
+            this.player1ScoreString.Size = new System.Drawing.Size(85, 50);
             this.player1ScoreString.TabIndex = 6;
             this.player1ScoreString.Text = "Love";
             // 
             // player2ScoreString
             // 
             this.player2ScoreString.AutoSize = true;
-            this.player2ScoreString.Location = new System.Drawing.Point(538, 302);
+            this.player2ScoreString.Font = new System.Drawing.Font("Amiri Quran", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.player2ScoreString.Location = new System.Drawing.Point(513, 267);
             this.player2ScoreString.Name = "player2ScoreString";
-            this.player2ScoreString.Size = new System.Drawing.Size(32, 15);
+            this.player2ScoreString.Size = new System.Drawing.Size(85, 50);
             this.player2ScoreString.TabIndex = 7;
             this.player2ScoreString.Text = "Love";
             // 

@@ -37,67 +37,124 @@ namespace TennisGame
 
         private void button1_Click(object sender, EventArgs e)
         {
-            PlayerOneGameCounter = ButtonHandler(PlayerOneScoreCounter, PlayerOneGameCounter, PlayerOneSetCounter,
-                player1SetsWon, player1Score, player2Score, player1ScoreString, player2ScoreString, 1);
+            ButtonHandler(1);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            PlayerTwoGameCounter = ButtonHandler(PlayerTwoScoreCounter, PlayerTwoGameCounter, PlayerTwoSetCounter,
-                player2SetsWon, player2Score, player1Score, player2ScoreString, player1ScoreString, 2);
+            ButtonHandler(2);
         }
 
-        private int ButtonHandler(int scoreCounter, int gamesCounter, int setsWon, Label playerSetsWon, Label playerScore, 
-            Label opponentScore, Label playerScoreString, Label opponentScoreString, int player)
+        private void ButtonHandler(int player)
         {
-            scoreCounter++;
-            gamesCounter++;
-            playerScore.Text = gamesCounter.ToString();
-            int playerScoreInt = Convert.ToInt32(playerScore.Text);
-            int opponentScoreInt = Convert.ToInt32(opponentScore.Text);
+            GameScore(player);
 
-            foreach (var key in Scores)
+            bool win = WinCondition(player);
+
+            if (win)
             {
-                if (key.Value == gamesCounter)
-                {
-                    playerScoreString.Text = key.Key;
-                }
+                SetScore(player);
             }
-
-            bool win = WinCondition(playerScoreInt, opponentScoreInt, player);
-
-            if (win == true)
-            {
-                PlayerOneGameCounter = 0;
-                PlayerTwoGameCounter = 0;
-                gamesCounter = 0;
-                setsWon++;
-                //playerScore.Text = "0";
-                //opponentScore.Text = "0";
-                playerScoreString.Text = "Love";
-                opponentScoreString.Text = "Love";
-                playerSetsWon.Text = setsWon.ToString(); 
-            }
-
-            return gamesCounter;
             // AdvantageHandler()
         }
 
-        public bool WinCondition(int playerScore, int opponentScore, int player)
+        public void GameScore(int player)
+        {
+            if (player == 1)
+            {
+                PlayerOneScoreCounter++;
+                PlayerOneGameCounter++;
+                player1Score.Text = PlayerOneScoreCounter.ToString();
+                foreach (var key in Scores)
+                {
+                    if (key.Value == PlayerOneGameCounter)
+                    {
+                        player1ScoreString.Text = key.Key;
+                    }
+                }
+            }
+            else if (player == 2)
+            {
+                PlayerTwoScoreCounter++;
+                PlayerTwoGameCounter++;
+                player2Score.Text = PlayerTwoScoreCounter.ToString();
+                foreach (var key in Scores)
+                {
+                    if (key.Value == PlayerTwoGameCounter)
+                    {
+                        player2ScoreString.Text = key.Key;
+                    }
+                }
+            }
+        }
+
+        public void SetScore(int player)
+        {
+            PlayerOneGameCounter = 0;
+            PlayerTwoGameCounter = 0;
+            player1ScoreString.Text = "Love";
+            player2ScoreString.Text = "Love";
+
+            if (player == 1)
+            {
+                PlayerOneSetCounter++;
+                player1SetsWon.Text = PlayerOneSetCounter.ToString();
+            }
+            else if (player == 2)
+            {
+                PlayerTwoSetCounter++;
+                player2SetsWon.Text = PlayerTwoSetCounter.ToString();
+            }
+        }
+
+        public bool WinCondition(int player)
         {
             bool win = false;
-            if (playerScore == 4 && playerScore - 1 > opponentScore)
+
+            GetPlayerProperties(player, out int playerGameCounter, out int playerScoreCounter, 
+                                out int playerSetCounter, out int opponentGameCounter);
+
+            // TODO: Håll dig till DRY principer, eftersom game conditions är samma, flytta dom till en metod.
+            // Player 1 win conditions
+            if (playerGameCounter == 4 && playerGameCounter - 1 > opponentGameCounter)
             {
                 winLabel.Text = "Player " + player.ToString() + " wins!";
                 win = true;
             }
-            else if (playerScore > 3 && opponentScore > 3 && playerScore > opponentScore + 1)
+            else if (playerGameCounter >= 3 && opponentGameCounter >= 3 && playerGameCounter > opponentGameCounter + 1)
             {
                 winLabel.Text = "Player " + player.ToString() + " wins!";
                 win = true;
             }
+            // TODO: Lägg till "Douce"
             return win;
         }
+
+        // Denna metod bestämmer vilken spelare det är som ska få poäng.
+        public void GetPlayerProperties(int player, out int playerGameCounter, out int playerScoreCounter,
+                                        out int playerSetCounter, out int opponentGameCounter)
+        {
+            playerGameCounter = new();
+            playerScoreCounter = new();
+            playerSetCounter = new();
+            
+            opponentGameCounter = new();
+            if (player == 1)
+            {
+                playerGameCounter = PlayerOneGameCounter;
+                playerScoreCounter = PlayerOneScoreCounter;
+                playerSetCounter = PlayerOneSetCounter;
+                opponentGameCounter = PlayerTwoGameCounter;
+            }
+            else if (player == 2)
+            {
+                playerGameCounter = PlayerTwoGameCounter;
+                playerScoreCounter = PlayerTwoScoreCounter;
+                playerSetCounter = PlayerTwoSetCounter;
+                opponentGameCounter = PlayerOneGameCounter;
+            }
+        }
+
         
         //private void AdvantageHandler()
         //{
