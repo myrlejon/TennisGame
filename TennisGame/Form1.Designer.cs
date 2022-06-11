@@ -31,13 +31,14 @@ namespace TennisGame
         {
             this.player1 = new System.Windows.Forms.Button();
             this.player2 = new System.Windows.Forms.Button();
-            this.player1ScoreLabel = new System.Windows.Forms.Label();
-            this.player2ScoreLabel = new System.Windows.Forms.Label();
             this.player1Score = new System.Windows.Forms.Label();
             this.player2Score = new System.Windows.Forms.Label();
             this.player1ScoreString = new System.Windows.Forms.Label();
             this.player2ScoreString = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.winLabel = new System.Windows.Forms.Label();
+            this.player1SetsWon = new System.Windows.Forms.Label();
+            this.player2SetsWon = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,39 +62,23 @@ namespace TennisGame
             this.player2.UseVisualStyleBackColor = true;
             this.player2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // player1ScoreLabel
-            // 
-            this.player1ScoreLabel.AutoSize = true;
-            this.player1ScoreLabel.Location = new System.Drawing.Point(165, 390);
-            this.player1ScoreLabel.Name = "player1ScoreLabel";
-            this.player1ScoreLabel.Size = new System.Drawing.Size(41, 15);
-            this.player1ScoreLabel.TabIndex = 2;
-            this.player1ScoreLabel.Text = "score: ";
-            // 
-            // player2ScoreLabel
-            // 
-            this.player2ScoreLabel.AutoSize = true;
-            this.player2ScoreLabel.Location = new System.Drawing.Point(529, 391);
-            this.player2ScoreLabel.Name = "player2ScoreLabel";
-            this.player2ScoreLabel.Size = new System.Drawing.Size(41, 15);
-            this.player2ScoreLabel.TabIndex = 3;
-            this.player2ScoreLabel.Text = "score: ";
-            // 
             // player1Score
             // 
             this.player1Score.AutoSize = true;
-            this.player1Score.Location = new System.Drawing.Point(203, 391);
+            this.player1Score.Font = new System.Drawing.Font("Segoe UI", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.player1Score.Location = new System.Drawing.Point(238, 174);
             this.player1Score.Name = "player1Score";
-            this.player1Score.Size = new System.Drawing.Size(13, 15);
+            this.player1Score.Size = new System.Drawing.Size(72, 86);
             this.player1Score.TabIndex = 4;
             this.player1Score.Text = "0";
             // 
             // player2Score
             // 
             this.player2Score.AutoSize = true;
-            this.player2Score.Location = new System.Drawing.Point(566, 391);
+            this.player2Score.Font = new System.Drawing.Font("Segoe UI", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.player2Score.Location = new System.Drawing.Point(409, 174);
             this.player2Score.Name = "player2Score";
-            this.player2Score.Size = new System.Drawing.Size(13, 15);
+            this.player2Score.Size = new System.Drawing.Size(72, 86);
             this.player2Score.TabIndex = 5;
             this.player2Score.Text = "0";
             // 
@@ -125,19 +110,50 @@ namespace TennisGame
             this.pictureBox1.TabIndex = 9;
             this.pictureBox1.TabStop = false;
             // 
+            // winLabel
+            // 
+            this.winLabel.AutoSize = true;
+            this.winLabel.Location = new System.Drawing.Point(337, 267);
+            this.winLabel.Name = "winLabel";
+            this.winLabel.Size = new System.Drawing.Size(0, 15);
+            this.winLabel.TabIndex = 10;
+            // 
+            // player1SetsWon
+            // 
+            this.player1SetsWon.AutoSize = true;
+            this.player1SetsWon.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.player1SetsWon.Location = new System.Drawing.Point(307, 174);
+            this.player1SetsWon.Name = "player1SetsWon";
+            this.player1SetsWon.Size = new System.Drawing.Size(54, 65);
+            this.player1SetsWon.TabIndex = 11;
+            this.player1SetsWon.Text = "0";
+            this.player1SetsWon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // player2SetsWon
+            // 
+            this.player2SetsWon.AutoSize = true;
+            this.player2SetsWon.Font = new System.Drawing.Font("Segoe UI", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.player2SetsWon.Location = new System.Drawing.Point(367, 174);
+            this.player2SetsWon.Name = "player2SetsWon";
+            this.player2SetsWon.Size = new System.Drawing.Size(54, 65);
+            this.player2SetsWon.TabIndex = 12;
+            this.player2SetsWon.Text = "0";
+            this.player2SetsWon.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
             this.ClientSize = new System.Drawing.Size(708, 471);
+            this.Controls.Add(this.player2SetsWon);
+            this.Controls.Add(this.player1SetsWon);
+            this.Controls.Add(this.winLabel);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.player2ScoreString);
             this.Controls.Add(this.player1ScoreString);
             this.Controls.Add(this.player2Score);
             this.Controls.Add(this.player1Score);
-            this.Controls.Add(this.player2ScoreLabel);
-            this.Controls.Add(this.player1ScoreLabel);
             this.Controls.Add(this.player2);
             this.Controls.Add(this.player1);
             this.Name = "Form1";
@@ -153,13 +169,14 @@ namespace TennisGame
 
         private System.Windows.Forms.Button player1;
         private System.Windows.Forms.Button player2;
-        private System.Windows.Forms.Label player1ScoreLabel;
-        private System.Windows.Forms.Label player2ScoreLabel;
         private System.Windows.Forms.Label player1Score;
         private System.Windows.Forms.Label player2Score;
         private System.Windows.Forms.Label player1ScoreString;
         private System.Windows.Forms.Label player2ScoreString;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label winLabel;
+        private System.Windows.Forms.Label player1SetsWon;
+        private System.Windows.Forms.Label player2SetsWon;
     }
 }
 
