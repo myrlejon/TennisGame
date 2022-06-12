@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace TennisGame.Models
 {
+    /// <summary>
+    /// Denna klass är till för att hantera värden som sedan visas upp i interfacet.
+    /// </summary>
     public class Player
     {
         public int PlayerNumber { get; set; } = 0;
@@ -16,6 +19,5 @@ namespace TennisGame.Models
         public string PlayerSetsWon { get; set; } = "0";
         public string PlayerScoreLabel { get; set; } = "0";
         public string PlayerScoreLabelString { get; set; } = "Love";
-
     }
 }

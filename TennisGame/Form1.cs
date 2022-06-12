@@ -13,7 +13,6 @@ namespace TennisGame
 {
     public partial class Form1 : Form
     {
-        // score counter = alla, gamecounter = 0-4 
         private bool DeuceBool { get; set; }
         private Dictionary<string, int> Scores { get; set; }
         private Models.Player Player1 { get; set; }
@@ -62,6 +61,7 @@ namespace TennisGame
             }
         }
 
+        // Denna metoden är en hjälpklass till Randomize, används för att få fram slumpmässiga resultat.
         public void RandomHandler((int, int) randomRange, int breakPoint, string firstEntry, string secondEntry,
                                   out string outcome, out int outcomeInt)
         {
@@ -78,32 +78,31 @@ namespace TennisGame
             }
         }
 
+        // Denna metoden används för spelaren som servar bollen, vinnaren returneras som en int.
         public int Serve(Models.Player player, Models.Player opponent, string serveOutcome, int serveOutcomeInt)
         {
-            int result = 0;
-            textBox2.Text = textBox2.Text + $"{player.PlayerName} servar och bollen... {serveOutcome}! {serveOutcomeInt}" + newLine;
+            int winner;
+            textBox2.Text = textBox2.Text + $"{player.PlayerName} servar och bollen... {serveOutcome}!" + newLine;
             if (serveOutcomeInt < 3)
             {
                 textBox2.Text = textBox2.Text + $"{opponent.PlayerName} vinner!" + newLine;
-                result = opponent.PlayerNumber;
+                winner = opponent.PlayerNumber;
             }
             else 
             {
                 textBox2.Text = textBox2.Text + $"{player.PlayerName} vinner!" + newLine;
-                result = player.PlayerNumber;
+                winner = player.PlayerNumber;
             }
-            return result;
+            return winner;
         }
 
+        // Denna metoden används för att avgöra vilken spelare som vann matchen.
         public int Randomize(Models.Player player1, Models.Player player2)
         {
-            int winner = 0;
-
+            int winner;
             RandomHandler((0, 10), 5, "Krona", "Klave", out string myntOutcome, out int myntOutcomeInt);
-            textBox2.Text = textBox2.Text + $"Domaren singlar slant och det blir... {myntOutcome}! {myntOutcomeInt}" + newLine;
-
+            textBox2.Text = textBox2.Text + $"Domaren singlar slant och det blir... {myntOutcome}!" + newLine;
             RandomHandler((0, 10), 3, "Missar", "Träffar", out string serveOutcome, out int serveOutcomeInt);
-
 
             if (myntOutcomeInt < 5)
             {
@@ -116,24 +115,26 @@ namespace TennisGame
             return winner;
         }
 
+        // Denna metod innehåller flera andra metoder, syftet är att räkna ut vad det blir för poäng till båda spelarna.
         private void ButtonHandler(Models.Player player, Models.Player opponent)
         {
-            // Avgör vilken spelare som får poäng
             GameScore(player);
             Deuce(player, opponent);
             bool win = WinCondition(player, opponent);
-            SetResults(player, opponent);
             if (win)
             {
                 SetScore(player, opponent);
             }
+            SetResults(player, opponent);
         }
 
+        // Denna metoden används för att öka poäng för vinnande spelaren.
         public void GameScore(Models.Player player)
         {
             player.PlayerScoreCounter++;
             player.PlayerGameCounter++;
             player.PlayerScoreLabel = player.PlayerScoreCounter.ToString();
+            textBox1.Text = textBox1.Text + $"{player.PlayerName} får ett poäng!" + newLine;
 
             foreach (var key in Scores)
             {
@@ -144,6 +145,7 @@ namespace TennisGame
             }
         }
 
+        // Denna metod innehåller spelregler ifall det blir 40-40 lika. 
         public void Deuce(Models.Player player, Models.Player opponent)
         {
             if (player.PlayerGameCounter >= 3 && opponent.PlayerGameCounter >= 3 && player.PlayerGameCounter == opponent.PlayerGameCounter)
@@ -158,16 +160,13 @@ namespace TennisGame
             }
         }
 
+        // Denna metod används för att visuellt visa upp vilken spelare som vinner i programmet.
         public bool WinCondition(Models.Player player, Models.Player opponent)
         {
             bool win = false;
 
-            if (player.PlayerGameCounter == 4 && player.PlayerGameCounter - 1 > opponent.PlayerGameCounter)
-            {
-                winLabel.Text = player.PlayerName + " wins!";
-                win = true;
-            }
-            else if (player.PlayerGameCounter >= 3 && opponent.PlayerGameCounter >= 3 && player.PlayerGameCounter > opponent.PlayerGameCounter + 1)
+            if (player.PlayerGameCounter == 4 && player.PlayerGameCounter - 1 > opponent.PlayerGameCounter
+                || player.PlayerGameCounter >= 3 && opponent.PlayerGameCounter >= 3 && player.PlayerGameCounter > opponent.PlayerGameCounter + 1)
             {
                 winLabel.Text = player.PlayerName + " wins!";
                 win = true;
@@ -179,6 +178,7 @@ namespace TennisGame
             return win;
         }
 
+        // Denna metod används för att nollställa vissa värden inför nästa set.
         public void SetScore(Models.Player player, Models.Player opponent)
         {
             DeuceBool = false;
@@ -188,12 +188,12 @@ namespace TennisGame
             opponent.PlayerScoreLabelString = "Love";
             player1ScoreString.Text = "Love";
             player2ScoreString.Text = "Love";
-
             player.PlayerSetCounter++;
             textBox1.Text = "";
             player.PlayerSetsWon = player.PlayerSetCounter.ToString();
         }
 
+        // Denna metod används för att sätta värden i interfacet.
         public void SetResults(Models.Player player, Models.Player opponent)
         {
             if (player.PlayerNumber == 1)
@@ -216,8 +216,6 @@ namespace TennisGame
                 player1ScoreString.Text = opponent.PlayerScoreLabelString;
                 player1SetsWon.Text = opponent.PlayerSetsWon;
             }
-
-            textBox1.Text = textBox1.Text + $"{player.PlayerName} får ett poäng!" + newLine;
         }
 
     }
