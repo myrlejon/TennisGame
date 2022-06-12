@@ -48,7 +48,7 @@ namespace TennisGame
             this.player1.Name = "player1";
             this.player1.Size = new System.Drawing.Size(129, 68);
             this.player1.TabIndex = 0;
-            this.player1.Text = "Player 1";
+            this.player1.Text = "Björn Borg";
             this.player1.UseVisualStyleBackColor = true;
             this.player1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -58,7 +58,7 @@ namespace TennisGame
             this.player2.Name = "player2";
             this.player2.Size = new System.Drawing.Size(129, 68);
             this.player2.TabIndex = 1;
-            this.player2.Text = "Player 2";
+            this.player2.Text = "John McEnroe";
             this.player2.UseVisualStyleBackColor = true;
             this.player2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -148,16 +148,16 @@ namespace TennisGame
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.ForestGreen;
             this.ClientSize = new System.Drawing.Size(708, 471);
-            this.Controls.Add(this.player2SetsWon);
             this.Controls.Add(this.player1SetsWon);
+            this.Controls.Add(this.player2SetsWon);
             this.Controls.Add(this.winLabel);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.player2ScoreString);
             this.Controls.Add(this.player1ScoreString);
             this.Controls.Add(this.player2Score);
-            this.Controls.Add(this.player1Score);
             this.Controls.Add(this.player2);
             this.Controls.Add(this.player1);
+            this.Controls.Add(this.player1Score);
             this.Name = "Form1";
             this.Text = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

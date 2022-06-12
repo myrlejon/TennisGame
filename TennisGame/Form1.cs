@@ -13,14 +13,10 @@ namespace TennisGame
     public partial class Form1 : Form
     {
         // score counter = alla, gamecounter = 0-4 
-        private int PlayerOneScoreCounter { get; set; }
-        private int PlayerTwoScoreCounter { get; set; }
-        private int PlayerOneGameCounter { get; set; }
-        private int PlayerTwoGameCounter { get; set; }
-        private int PlayerOneSetCounter { get; set; }
-        private int PlayerTwoSetCounter { get; set; }
         private bool DeuceBool { get; set; }
         private Dictionary<string, int> Scores { get; set; }
+        private Models.Player Player1 { get; set; }
+        private Models.Player Player2 { get; set; }
 
         public Form1()
         {
@@ -33,167 +29,118 @@ namespace TennisGame
                 {"Deuce", 4 }
             };
 
+            Player1 = new Models.Player() { PlayerNumber = 1, PlayerName = "Björn Borg"};
+            Player2 = new Models.Player() { PlayerNumber = 2, PlayerName = "John McEnroe"};
+
             InitializeComponent();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ButtonHandler(1);
+            ButtonHandler(Player1, Player2);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ButtonHandler(2);
+            ButtonHandler(Player2, Player1);
         }
 
-        private void ButtonHandler(int player)
+        private void ButtonHandler(Models.Player player, Models.Player opponent)
         {
             // Avgör vilken spelare som får poäng
             GameScore(player);
-
-            GetPlayerProperties(player, out int playerGameCounter, out int playerScoreCounter,
-                    out int playerSetCounter, out int opponentGameCounter, out Label playerScore,
-                    out Label playerScoreString);
-
-            Deuce(player, playerGameCounter, opponentGameCounter);
-            bool win = WinCondition(player);
+            Deuce(player, opponent);
+            bool win = WinCondition(player, opponent);
 
             if (win)
             {
-                SetScore(player);
+                SetScore(player, opponent);
             }
-            // AdvantageHandler()
+            SetResults(player, opponent);
         }
 
-        public void Deuce(int player, int playerGameCounter, int opponentGameCounter)
+        public void GameScore(Models.Player player)
         {
-            if (playerGameCounter >= 3 && opponentGameCounter >= 3 && playerGameCounter == opponentGameCounter)
+            player.PlayerScoreCounter++;
+            player.PlayerGameCounter++;
+            player.PlayerScoreLabel = player.PlayerScoreCounter.ToString();
+
+            foreach (var key in Scores)
             {
-                player1ScoreString.Text = "Deuce";
-                player2ScoreString.Text = "Deuce";
+                if (key.Value == player.PlayerGameCounter)
+                {
+                    player.PlayerScoreLabelString = key.Key;
+                }
+            }
+        }
+
+        public void Deuce(Models.Player player, Models.Player opponent)
+        {
+            if (player.PlayerGameCounter >= 3 && opponent.PlayerGameCounter >= 3 && player.PlayerGameCounter == opponent.PlayerGameCounter)
+            {
+                player.PlayerScoreLabelString = "Deuce";
+                opponent.PlayerScoreLabelString = "Deuce";
                 DeuceBool = true;
             }
-            if (DeuceBool && playerGameCounter > opponentGameCounter)
+            if (DeuceBool && player.PlayerGameCounter > opponent.PlayerGameCounter)
             {
-                if (player == 1)
-                {
-                    player1ScoreString.Text = "Advantage";
-                }
-                else if (player == 2)
-                {
-                    player2ScoreString.Text = "Advantage";
-                }
-            }
-            //if (DeuceBool && playerGameCounter == opponentGameCounter)
-            //{
-            //    player1ScoreString.Text = "Deuce";
-            //    player2ScoreString.Text = "Deuce";
-            //}
-        }
-
-        // TODO: Refaktorera för DRY principer.
-        public void GameScore(int player)
-        {
-            if (player == 1)
-            {
-                PlayerOneScoreCounter++;
-                PlayerOneGameCounter++;
-                player1Score.Text = PlayerOneScoreCounter.ToString();
-                foreach (var key in Scores)
-                {
-                    if (key.Value == PlayerOneGameCounter)
-                    {
-                        player1ScoreString.Text = key.Key;
-                    }
-                }
-            }
-            else if (player == 2)
-            {
-                PlayerTwoScoreCounter++;
-                PlayerTwoGameCounter++;
-                player2Score.Text = PlayerTwoScoreCounter.ToString();
-                foreach (var key in Scores)
-                {
-                    if (key.Value == PlayerTwoGameCounter)
-                    {
-                        player2ScoreString.Text = key.Key;
-                    }
-                }
+                player.PlayerScoreLabelString = "Advantage";
             }
         }
 
-        public void SetScore(int player)
-        {
-            DeuceBool = false;
-            PlayerOneGameCounter = 0;
-            PlayerTwoGameCounter = 0;
-            player1ScoreString.Text = "Love";
-            player2ScoreString.Text = "Love";
-
-            if (player == 1)
-            {
-                PlayerOneSetCounter++;
-                player1SetsWon.Text = PlayerOneSetCounter.ToString();
-            }
-            else if (player == 2)
-            {
-                PlayerTwoSetCounter++;
-                player2SetsWon.Text = PlayerTwoSetCounter.ToString();
-            }
-        }
-
-        public bool WinCondition(int player)
+        public bool WinCondition(Models.Player player, Models.Player opponent)
         {
             bool win = false;
 
-            GetPlayerProperties(player, out int playerGameCounter, out int playerScoreCounter, 
-                                out int playerSetCounter, out int opponentGameCounter, out Label playerScore,
-                                out Label playerScoreString);
-
-            // TODO: Håll dig till DRY principer, eftersom game conditions är samma, flytta dom till en metod.
-            // Player 1 win conditions
-            if (playerGameCounter == 4 && playerGameCounter - 1 > opponentGameCounter)
+            if (player.PlayerGameCounter == 4 && player.PlayerGameCounter - 1 > opponent.PlayerGameCounter)
             {
-                winLabel.Text = "Player " + player.ToString() + " wins!";
+                winLabel.Text = player.PlayerName + " wins!";
                 win = true;
             }
-            else if (playerGameCounter >= 3 && opponentGameCounter >= 3 && playerGameCounter > opponentGameCounter + 1)
+            else if (player.PlayerGameCounter >= 3 && opponent.PlayerGameCounter >= 3 && player.PlayerGameCounter > opponent.PlayerGameCounter + 1)
             {
-                winLabel.Text = "Player " + player.ToString() + " wins!";
+                winLabel.Text = player.PlayerName + " wins!";
                 win = true;
+            }
+            else
+            {
+                winLabel.Text = "";
             }
             return win;
         }
 
-        // Denna metod bestämmer vilken spelare det är som ska få poäng.
-        public void GetPlayerProperties(int player, out int playerGameCounter, out int playerScoreCounter,
-                                        out int playerSetCounter, out int opponentGameCounter, out Label playerScore,
-                                        out Label playerScoreString)
+        public void SetScore(Models.Player player, Models.Player opponent)
         {
-            playerGameCounter = new();
-            playerScoreCounter = new();
-            playerSetCounter = new();
-            opponentGameCounter = new();
-            playerScore = new();
-            playerScoreString = new();
+            DeuceBool = false;
+            player.PlayerGameCounter = 0;
+            opponent.PlayerGameCounter = 0;
+            player.PlayerScoreLabelString = "Love";
+            opponent.PlayerScoreLabelString = "Love";
+            player.PlayerSetCounter++;
+            player.PlayerSetsWon = player.PlayerSetCounter.ToString();
+        }
 
-            if (player == 1)
+        public void SetResults(Models.Player player, Models.Player opponent)
+        {
+            if (player.PlayerNumber == 1)
             {
-                playerGameCounter = PlayerOneGameCounter;
-                playerScoreCounter = PlayerOneScoreCounter;
-                playerSetCounter = PlayerOneSetCounter;
-                opponentGameCounter = PlayerTwoGameCounter;
-                playerScore = player1Score;
-                playerScoreString = player1ScoreString;
+                player1Score.Text = player.PlayerScoreLabel;
+                player1ScoreString.Text = player.PlayerScoreLabelString;
+                player1SetsWon.Text = player.PlayerSetsWon;
+
+                player2Score.Text = opponent.PlayerScoreLabel;
+                player2ScoreString.Text = opponent.PlayerScoreLabelString;
+                player2SetsWon.Text = opponent.PlayerSetsWon;
             }
-            else if (player == 2)
+            else if (player.PlayerNumber == 2)
             {
-                playerGameCounter = PlayerTwoGameCounter;
-                playerScoreCounter = PlayerTwoScoreCounter;
-                playerSetCounter = PlayerTwoSetCounter;
-                opponentGameCounter = PlayerOneGameCounter;
-                playerScore = player2Score;
-                playerScoreString = player2ScoreString;
+                player2Score.Text = player.PlayerScoreLabel;
+                player2ScoreString.Text = player.PlayerScoreLabelString;
+                player2SetsWon.Text = player.PlayerSetsWon;
+
+                player1Score.Text = opponent.PlayerScoreLabel;
+                player1ScoreString.Text = opponent.PlayerScoreLabelString;
+                player1SetsWon.Text = opponent.PlayerSetsWon;
             }
         }
     }
