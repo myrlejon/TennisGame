@@ -19,6 +19,7 @@ namespace TennisGame
         private int PlayerTwoGameCounter { get; set; }
         private int PlayerOneSetCounter { get; set; }
         private int PlayerTwoSetCounter { get; set; }
+        private bool DeuceBool { get; set; }
         private Dictionary<string, int> Scores { get; set; }
 
         public Form1()
@@ -29,7 +30,7 @@ namespace TennisGame
                 {"Fifteen", 1},
                 {"Thirty", 2},
                 {"Forty", 3},
-                {"Game", 4 }
+                {"Deuce", 4 }
             };
 
             InitializeComponent();
@@ -47,8 +48,14 @@ namespace TennisGame
 
         private void ButtonHandler(int player)
         {
+            // Avgör vilken spelare som får poäng
             GameScore(player);
 
+            GetPlayerProperties(player, out int playerGameCounter, out int playerScoreCounter,
+                    out int playerSetCounter, out int opponentGameCounter, out Label playerScore,
+                    out Label playerScoreString);
+
+            Deuce(player, playerGameCounter, opponentGameCounter);
             bool win = WinCondition(player);
 
             if (win)
@@ -58,6 +65,33 @@ namespace TennisGame
             // AdvantageHandler()
         }
 
+        public void Deuce(int player, int playerGameCounter, int opponentGameCounter)
+        {
+            if (playerGameCounter >= 3 && opponentGameCounter >= 3 && playerGameCounter == opponentGameCounter)
+            {
+                player1ScoreString.Text = "Deuce";
+                player2ScoreString.Text = "Deuce";
+                DeuceBool = true;
+            }
+            if (DeuceBool && playerGameCounter > opponentGameCounter)
+            {
+                if (player == 1)
+                {
+                    player1ScoreString.Text = "Advantage";
+                }
+                else if (player == 2)
+                {
+                    player2ScoreString.Text = "Advantage";
+                }
+            }
+            //if (DeuceBool && playerGameCounter == opponentGameCounter)
+            //{
+            //    player1ScoreString.Text = "Deuce";
+            //    player2ScoreString.Text = "Deuce";
+            //}
+        }
+
+        // TODO: Refaktorera för DRY principer.
         public void GameScore(int player)
         {
             if (player == 1)
@@ -90,6 +124,7 @@ namespace TennisGame
 
         public void SetScore(int player)
         {
+            DeuceBool = false;
             PlayerOneGameCounter = 0;
             PlayerTwoGameCounter = 0;
             player1ScoreString.Text = "Love";
@@ -112,7 +147,8 @@ namespace TennisGame
             bool win = false;
 
             GetPlayerProperties(player, out int playerGameCounter, out int playerScoreCounter, 
-                                out int playerSetCounter, out int opponentGameCounter);
+                                out int playerSetCounter, out int opponentGameCounter, out Label playerScore,
+                                out Label playerScoreString);
 
             // TODO: Håll dig till DRY principer, eftersom game conditions är samma, flytta dom till en metod.
             // Player 1 win conditions
@@ -126,25 +162,29 @@ namespace TennisGame
                 winLabel.Text = "Player " + player.ToString() + " wins!";
                 win = true;
             }
-            // TODO: Lägg till "Douce"
             return win;
         }
 
         // Denna metod bestämmer vilken spelare det är som ska få poäng.
         public void GetPlayerProperties(int player, out int playerGameCounter, out int playerScoreCounter,
-                                        out int playerSetCounter, out int opponentGameCounter)
+                                        out int playerSetCounter, out int opponentGameCounter, out Label playerScore,
+                                        out Label playerScoreString)
         {
             playerGameCounter = new();
             playerScoreCounter = new();
             playerSetCounter = new();
-            
             opponentGameCounter = new();
+            playerScore = new();
+            playerScoreString = new();
+
             if (player == 1)
             {
                 playerGameCounter = PlayerOneGameCounter;
                 playerScoreCounter = PlayerOneScoreCounter;
                 playerSetCounter = PlayerOneSetCounter;
                 opponentGameCounter = PlayerTwoGameCounter;
+                playerScore = player1Score;
+                playerScoreString = player1ScoreString;
             }
             else if (player == 2)
             {
@@ -152,21 +192,9 @@ namespace TennisGame
                 playerScoreCounter = PlayerTwoScoreCounter;
                 playerSetCounter = PlayerTwoSetCounter;
                 opponentGameCounter = PlayerOneGameCounter;
+                playerScore = player2Score;
+                playerScoreString = player2ScoreString;
             }
         }
-
-        
-        //private void AdvantageHandler()
-        //{
-        //    // Överskriver värdet ifall spelaren leder
-        //    if (playerScoreInt > opponentScoreInt)
-        //    {
-        //        playerScoreString.Text = "Advantage";
-        //    }
-        //    else if (playerScoreInt < opponentScoreInt)
-        //    {
-        //        opponentScoreString.Text = "Advantage";
-        //    }
-        //}
     }
 }
